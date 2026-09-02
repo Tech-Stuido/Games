@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coin Row — 90 Free Browser Games</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0b10;
+    --surface: #14161f;
+    --surface-2: #1b1e2b;
+    --line: #262a3a;
+    --text: #edeef3;
+    --text-dim: #8b90a3;
+    --mint: #4ff0c0;
+    --pink: #ff3e7f;
+    --amber: #ffb84f;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-body: 'Inter', sans-serif;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    min-height:100vh;
+    background-image:
+      radial-gradient(circle at 15% 0%, rgba(79,240,192,0.07), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(255,62,127,0.08), transparent 40%);
+  }
+
+  a{color:inherit;}
+
+  ::selection{ background:var(--mint); color:#08110d; }
+
+  /* ---------- Header ---------- */
+  header.top{
+    padding: 48px 6vw 32px;
+    max-width:1400px;
+    margin:0 auto;
+  }
+
+  .brand{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+    margin-bottom:6px;
+  }
+
+  .brand .mark{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:clamp(2.2rem, 4vw, 3.2rem);
+    letter-spacing:-0.02em;
+    line-height:1;
+  }
+  .brand .mark span{ color:var(--mint); }
+
+  .brand .count{
+    font-family:var(--font-display);
+    font-size:0.95rem;
+    color:var(--text-dim);
+    border:1px solid var(--line);
+    padding:4px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+
+  .tagline{
+    color:var(--text-dim);
+    font-size:1.02rem;
+    max-width:560px;
+    line-height:1.5;
+    margin-bottom:32px;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    align-items:center;
+  }
+
+  .search-wrap{
+    position:relative;
+    flex:1 1 280px;
+    max-width:420px;
+  }
+
+  .search-wrap input{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:0.98rem;
+    padding:12px 16px 12px 40px;
+    border-radius:10px;
+    outline:none;
+    transition:border-color .15s ease;
+  }
+  .search-wrap input:focus{ border-color:var(--mint); }
+  .search-wrap input::placeholder{ color:var(--text-dim); }
+
+  .search-wrap svg{
+    position:absolute;
+    left:13px; top:50%;
+    transform:translateY(-50%);
+    width:16px; height:16px;
+    stroke:var(--text-dim);
+    pointer-events:none;
+  }
+
+  .random-btn{
+    background:var(--surface);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-weight:500;
+    font-size:0.92rem;
+    padding:12px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .random-btn:hover{ border-color:var(--pink); color:var(--pink); }
+
+  /* ---------- Category pills ---------- */
+  .categories{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    padding:0 6vw 28px;
+    max-width:1400px;
+    margin:0 auto;
+  }
+
+  .pill{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--text-dim);
+    font-family:var(--font-body);
+    font-size:0.86rem;
+    font-weight:500;
+    padding:8px 15px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:all .15s ease;
+    white-space:nowrap;
+  }
+  .pill:hover{ border-color:var(--text-dim); color:var(--text); }
+  .pill.active{
+    background:var(--mint);
+    border-color:var(--mint);
+    color:#08110d;
+    font-weight:600;
+  }
+
+  /* ---------- Grid ---------- */
+  main{
+    max-width:1400px;
+    margin:0 auto;
+    padding:0 6vw 80px;
+  }
+
+  .empty-state{
+    text-align:center;
+    color:var(--text-dim);
+    padding:80px 20px;
+    font-size:1rem;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(190px, 1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    border-color:var(--card-accent, var(--mint));
+  }
+  .card:focus-visible{
+    outline:2px solid var(--mint);
+    outline-offset:2px;
+  }
+
+  .card .tile{
+    aspect-ratio:4/3;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    background:
+      linear-gradient(155deg, var(--card-accent, var(--mint)) 0%, transparent 60%),
+      var(--surface-2);
+    overflow:hidden;
+  }
+
+  .card .tile::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:repeating-linear-gradient(
+      0deg,
+      rgba(255,255,255,0.035) 0px,
+      rgba(255,255,255,0.035) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events:none;
+  }
+
+  .card .initial{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:2.6rem;
+    color:rgba(10,11,16,0.85);
+    letter-spacing:-0.02em;
+    z-index:1;
+  }
+
+  .card .play-hint{
+    position:absolute;
+    bottom:8px; right:10px;
+    font-family:var(--font-display);
+    font-size:0.68rem;
+    font-weight:600;
+    letter-spacing:0.04em;
+    color:rgba(10,11,16,0.55);
+    z-index:1;
+  }
+
+  .card .info{
+    padding:11px 13px 13px;
+  }
+
+  .card .title{
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:0.9rem;
+    line-height:1.3;
+    margin-bottom:4px;
+  }
+
+  .card .cat{
+    font-size:0.76rem;
+    color:var(--text-dim);
+  }
+
+  /* ---------- Player overlay ---------- */
+  .player{
+    position:fixed;
+    inset:0;
+    background:rgba(6,7,11,0.92);
+    backdrop-filter:blur(6px);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:20px;
+  }
+  .player.open{ display:flex; }
+
+  .player-frame{
+    width:100%;
+    max-width:1100px;
+    height:100%;
+    max-height:760px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+
+  .player-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+
+  .player-bar .p-title{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:1rem;
+  }
+
+  .player-bar .p-actions{
+    display:flex;
+    gap:8px;
+  }
+
+  .p-btn{
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:var(--font-body);
+    font-size:0.82rem;
+    font-weight:500;
+    padding:7px 13px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:border-color .15s ease;
+  }
+  .p-btn:hover{ border-color:var(--mint); }
+  .p-btn.close:hover{ border-color:var(--pink); }
+
+  .player-frame iframe{
+    flex:1;
+    width:100%;
+    border:none;
+    background:#fff;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    padding:32px 6vw 48px;
+    max-width:1400px;
+    margin:0 auto;
+    color:var(--text-dim);
+    font-size:0.82rem;
+    border-top:1px solid var(--line);
+    line-height:1.6;
+  }
+
+  footer a{ color:var(--mint); text-decoration:none; }
+  footer a:hover{ text-decoration:underline; }
+
+  @media (max-width:560px){
+    header.top{ padding:32px 5vw 24px; }
+    .categories{ padding:0 5vw 20px; }
+    main{ padding:0 5vw 60px; }
+    .grid{ grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px; }
+    .card .initial{ font-size:2rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .card{ transition:none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <div class="mark">Coin<span>Row</span></div>
+    <div class="count" id="visible-count">90 games</div>
+  </div>
+  <p class="tagline">A shelf of offline browser games, packed into one folder. No installs, no accounts — pick a cabinet and play.</p>
+
+  <div class="controls">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search" placeholder="Search games…" autocomplete="off">
+    </div>
+    <button class="random-btn" id="random-btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="15.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="8.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="8.5" cy="15.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+      Surprise me
+    </button>
+  </div>
+</header>
+
+<nav class="categories" id="categories"></nav>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty-state" id="empty-state" style="display:none;">No games match that search. Try a different word.</div>
+</main>
+
+<footer>
+  Games sourced from the community-maintained <a href="https://github.com/mbisht374-jpg/Offline-HTML-Games-Pack" target="_blank" rel="noopener">Offline HTML Games Pack</a>. This build includes the 90 lightest files from that collection (each under 8MB) so the whole site stays easy to host and download. All games run entirely in your browser — nothing is sent to a server.
+</footer>
+
+<div class="player" id="player">
+  <div class="player-frame">
+    <div class="player-bar">
+      <div class="p-title" id="player-title">Game</div>
+      <div class="p-actions">
+        <button class="p-btn" id="fullscreen-btn">Fullscreen</button>
+        <button class="p-btn close" id="close-btn">Close ✕</button>
+      </div>
+    </div>
+    <iframe id="game-frame" src="" title="Game player"></iframe>
+  </div>
+</div>
+
+<script>
+const ACCENTS = ['#4ff0c0', '#ff3e7f', '#ffb84f', '#7c9bff', '#c792ea'];
+
+let manifest = [];
+let activeCategory = 'All';
+let searchTerm = '';
+
+const grid = document.getElementById('grid');
+const categoriesEl = document.getElementById('categories');
+const emptyState = document.getElementById('empty-state');
+const visibleCount = document.getElementById('visible-count');
+const searchInput = document.getElementById('search');
+const player = document.getElementById('player');
+const gameFrame = document.getElementById('game-frame');
+const playerTitle = document.getElementById('player-title');
+
+function accentFor(title){
+  let hash = 0;
+  for(let i=0;i<title.length;i++) hash = (hash*31 + title.charCodeAt(i)) >>> 0;
+  return ACCENTS[hash % ACCENTS.length];
+}
+
+function renderCategories(){
+  const cats = ['All', ...new Set(manifest.map(g => g.category))].sort((a,b)=> a==='All'? -1 : a.localeCompare(b));
+  categoriesEl.innerHTML = '';
+  cats.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'pill' + (cat === activeCategory ? ' active' : '');
+    btn.textContent = cat;
+    btn.addEventListener('click', () => {
+      activeCategory = cat;
+      renderCategories();
+      renderGrid();
+    });
+    categoriesEl.appendChild(btn);
+  });
+}
+
+function renderGrid(){
+  const term = searchTerm.trim().toLowerCase();
+  const filtered = manifest.filter(g => {
+    const matchesCat = activeCategory === 'All' || g.category === activeCategory;
+    const matchesTerm = !term || g.title.toLowerCase().includes(term);
+    return matchesCat && matchesTerm;
+  });
+
+  visibleCount.textContent = `${filtered.length} game${filtered.length === 1 ? '' : 's'}`;
+  grid.innerHTML = '';
+  emptyState.style.display = filtered.length ? 'none' : 'block';
+
+  filtered.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.tabIndex = 0;
+    card.style.setProperty('--card-accent', accentFor(g.title));
+    card.innerHTML = `
+      <div class="tile">
+        <span class="initial">${g.title.charAt(0)}</span>
+        <span class="play-hint">PLAY</span>
+      </div>
+      <div class="info">
+        <div class="title">${g.title}</div>
+        <div class="cat">${g.category}</div>
+      </div>
+    `;
+    const open = () => openGame(g);
+    card.addEventListener('click', open);
+    card.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); open(); } });
+    grid.appendChild(card);
+  });
+}
+
+function openGame(g){
+  playerTitle.textContent = g.title;
+  gameFrame.src = `games/${g.file}`;
+  player.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeGame(){
+  player.classList.remove('open');
+  gameFrame.src = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('close-btn').addEventListener('click', closeGame);
+document.getElementById('fullscreen-btn').addEventListener('click', () => {
+  const frame = document.querySelector('.player-frame');
+  if(frame.requestFullscreen) frame.requestFullscreen();
+});
+player.addEventListener('click', e => { if(e.target === player) closeGame(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && player.classList.contains('open')) closeGame(); });
+
+searchInput.addEventListener('input', e => {
+  searchTerm = e.target.value;
+  renderGrid();
+});
+
+document.getElementById('random-btn').addEventListener('click', () => {
+  if(!manifest.length) return;
+  const pick = manifest[Math.floor(Math.random() * manifest.length)];
+  openGame(pick);
+});
+
+fetch('manifest.json')
+  .then(r => r.json())
+  .then(data => {
+    manifest = data.sort((a,b) => a.title.localeCompare(b.title));
+    renderCategories();
+    renderGrid();
+  })
+  .catch(() => {
+    emptyState.textContent = 'Could not load manifest.json — make sure it sits next to index.html.';
+    emptyState.style.display = 'block';
+  });
+</script>
+
+</body>
+</html>
